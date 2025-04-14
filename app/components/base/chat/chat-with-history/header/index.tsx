@@ -78,13 +78,13 @@ const Header = () => {
             <RiLayoutRight2Line className='h-[18px] w-[18px]' />
           </ActionButton>
           <div className='mr-1 shrink-0'>
-            <AppIcon
+            {/* <AppIcon
               size='large'
               iconType={appData?.site.icon_type}
               icon={appData?.site.icon}
               background={appData?.site.icon_background}
               imageUrl={appData?.site.icon_url}
-            />
+            /> */}
           </div>
           {!currentConversationId && (
             <div className={cn('system-md-semibold grow truncate text-text-secondary')}>{appData?.site.title}</div>

@@ -82,9 +82,9 @@ const Sidebar = ({ isPanel }: Props) => {
       isPanel && 'rounded-xl border-[0.5px] border-components-panel-border-subtle bg-components-panel-bg shadow-lg',
     )}>
       <div className={cn(
-        'flex shrink-0 items-center gap-3 p-3 pr-2',
+        'flex shrink-0 items-center gap-3 p-4 pr-2',
       )}>
-        <div className='shrink-0'>
+        {/* <div className='shrink-0'>
           <AppIcon
             size='large'
             iconType={appData?.site.icon_type}
@@ -92,9 +92,9 @@ const Sidebar = ({ isPanel }: Props) => {
             background={appData?.site.icon_background}
             imageUrl={appData?.site.icon_url}
           />
-        </div>
+        </div> */}
         <div className={cn('system-md-semibold grow truncate text-text-secondary')}>{appData?.site.title}</div>
-        {!isMobile && isSidebarCollapsed && (
+        {/* {!isMobile && isSidebarCollapsed && (
           <ActionButton size='l' onClick={() => handleSidebarCollapse(false)}>
             <RiExpandRightLine className='h-[18px] w-[18px]' />
           </ActionButton>
@@ -103,9 +103,9 @@ const Sidebar = ({ isPanel }: Props) => {
           <ActionButton size='l' onClick={() => handleSidebarCollapse(true)}>
             <RiLayoutLeft2Line className='h-[18px] w-[18px]' />
           </ActionButton>
-        )}
+        )} */}
       </div>
-      <div className='shrink-0 px-3 py-4'>
+      <div className='shrink-0 px-3'>
         <Button variant='secondary-accent' disabled={isResponding} className='w-full justify-center' onClick={handleNewConversation}>
           <RiEditBoxLine className='mr-1 h-4 w-4' />
           {t('share.chat.newChat')}
@@ -136,9 +136,12 @@ const Sidebar = ({ isPanel }: Props) => {
         )}
       </div>
       <div className='flex shrink-0 items-center justify-between p-3'>
-        <MenuDropdown placement='top-start' data={appData?.site} />
+        {/* <MenuDropdown placement='top-start' data={appData?.site} /> */}
         {/* powered by */}
-        <div className='shrink-0'>
+        <div className='shrink-0'
+            style={{
+              display: 'none',
+            }}>
           {!appData?.custom_config?.remove_webapp_brand && (
             <div className={cn(
               'flex shrink-0 items-center gap-1.5 px-2',
