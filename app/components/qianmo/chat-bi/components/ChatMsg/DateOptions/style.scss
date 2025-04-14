@@ -1,0 +1,53 @@
+// 导入样式文件
+@import '../../../styles/variables.scss';
+
+// 定义变量
+$date-options-prefix-cls: #{"#{qianmo-chat-bi-prefix}-date-options"};
+
+
+    // 主类
+    .#{$date-options-prefix-cls} {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    font-size: 14px;
+
+    // 子项类
+    &-item {
+        position: relative;
+        color: var(--text-color-secondary);
+        cursor: pointer;
+
+        // 悬停状态
+        &:hover {
+            color: var(--chat-blue);
+        }
+    }
+
+    // 激活日期类
+    &-date-active {
+        color: var(--chat-blue);
+    }
+
+    // 移动端日期类
+    &-date-mobile {
+        font-size: 12px;
+    }
+
+    // 激活标识类
+    &-active-identifier {
+        position: absolute;
+        bottom: -6px;
+        width: 100%;
+        height: 4px;
+        background-color: var(--chat-blue);
+        border-radius: 4px 4px 0 0;
+    }
+
+    // 分隔线类
+    &-item-divider {
+        width: 1px;
+        height: 16px;
+        background-color: var(--text-color-fifth);
+    }
+}

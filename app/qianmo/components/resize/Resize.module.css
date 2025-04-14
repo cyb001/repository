@@ -1,0 +1,101 @@
+.resize-container {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--qm-main-bg-color);
+}
+
+.resize-container.horizontal {
+  flex-direction: row;
+}
+
+.resize-container.vertical {
+  flex-direction: column;
+}
+
+.resize-trigger {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.horizontal .resize-trigger {
+  width: 10px;
+  margin: 0 -0px;
+}
+
+.horizontal .bar {
+  cursor: col-resize;
+}
+
+.vertical .resize-trigger {
+  height: 10px;
+  margin: -0px 0;
+}
+
+.vertical .bar {
+  cursor: col-resize;
+}
+
+.bar::after {
+  content: "";
+  position: absolute;
+  background: #e7e7e7;
+  transition: all 0.2s;
+}
+
+.horizontal .resize-trigger::after {
+  width: 4px;
+  height: 60px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 2px;
+}
+
+.vertical .resize-trigger::after {
+  height: 4px;
+  width: 60px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 2px;
+}
+
+.resize-trigger:hover::after {
+  background: #c4c4c4;
+}
+
+.first-pane {
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.second-pane {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.horizontal .first-pane {
+  margin-right: 0px;
+}
+.horizontal .second-pane {
+  margin-left: 0px;
+}
+
+.vertical .first-pane {
+  margin-bottom: 0px;
+}
+.vertical .second-pane {
+  margin-top: 0px;
+}

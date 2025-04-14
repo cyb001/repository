@@ -1,0 +1,29 @@
+.top-btn-box {
+  height: 40px;
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .top-left-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-right: auto;
+    border: none !important;
+  }
+
+  .top-right-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+    border: none !important;
+  }
+}
+.bottom-ctx-box {
+  width:100%;
+  max-height: calc(100vh - 150px);
+  overflow: auto;
+}

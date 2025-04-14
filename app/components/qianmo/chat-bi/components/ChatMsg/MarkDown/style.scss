@@ -1,0 +1,10 @@
+// 注意这里扩展名改为 .scss
+@import '../../../styles/index.scss';
+
+// 将 @ 替换为 $
+$markdown-prefix-cls: "#{qianmo-chat-bi-prefix}-markdown";
+
+// 类名插值使用 #{}
+.#{$markdown-prefix-cls} {
+  margin-top: 6px;
+}

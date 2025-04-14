@@ -1,0 +1,12 @@
+.grid {
+    display: grid;
+    padding: 5px 15px 15px 15px;
+}
+
+.grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.gap-4 {
+    gap: 15px;
+}

@@ -1,0 +1,16 @@
+.info-list {
+  padding: 8px;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.info-list:hover {
+  background-color: #f5f5f5;
+  color: #1890ff;
+}
+
+.logout-button {
+  color: #ff4d4f;
+  padding: 8px 0;
+  cursor: pointer;
+}

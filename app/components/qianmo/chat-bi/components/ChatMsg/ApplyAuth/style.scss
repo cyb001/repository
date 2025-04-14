@@ -1,0 +1,12 @@
+// 定义变量，Sass 使用 $ 符号
+$apply-auth-cls: "#{$qianmo-chat-bi-prefix}-apply-auth";
+
+.#{$apply-auth-cls} {
+    font-size: 14px;
+    color: var(--text-color);
+
+    &-apply {
+        color: var(--chat-blue);
+        cursor: pointer;
+    }
+}
