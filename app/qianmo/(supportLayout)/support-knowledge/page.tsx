@@ -5,7 +5,7 @@ import { Segmented } from "antd";
 import ResizeContainer from "@/app/qianmo/components/resize";
 import { getTagbarList } from "./request";
 import Icon from "@/app/qianmo/components/antIcon";
-import KnowledgMain from "./knowledg"
+import KnowledgMain from "./knowledge"
 import KnowledgLLM from "./llm"
 
 interface TagBar {

@@ -1,7 +1,13 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-// import DifyChat from '../dify-chat';
-// import { fetchKnowledgeList } from '@/service'
+import { useRouter, usePathname } from 'next/navigation'
+import { fetchAppList } from "@/service/apps";
+import type { AppListResponse } from "@/models/app";
+import ChatWithHistory from '@/app/components/base/chat/chat-with-history'
+// import { useContext } from 'use-context-selector'
+// import ExploreContext from '@/context/explore-context'
+import Main from '@/app/components/explore/installed-app'
+import ChatAgent from '@/app/(qianmoChatLayout)/chat-agent/[appId]/page'
 
 interface Card {
   title: string;
@@ -15,45 +21,47 @@ interface Card {
   apiKey: string;
 }
 
-interface CardData {
-  [key: string]: Card[];
-}
 
-const cardData: CardData[] = [
-    {
-      title: '人员信息知识库',
-      icon: '/images/agent/deepseek.png',
-      type: 'KNOWLEDGE',
-      desc: '本工作流主要是用到了知识检索组件+知识库实现私有化知识库检索功能',
-      tags: ['数据问答', '通用问答', '报告问答'],
-      apiBase: 'http://10.16.10.113',
-      apiVersion: '/v1',
-      appId: '974262e7-3565-4af0-ae5f-79b0c92a86b9',
-      apiKey: 'app-Vuoc1ifQpjYMiGMyjShUiWhv',
-    },
-    {
-      title: '规则制度知识库',
-      icon: '/images/agent/deepseek.png',
-      type: 'KNOWLEDGE',
-      desc: '本工作流主要是用到了知识检索组件+知识库实现私有化知识库检索功能',
-      tags: ['数据问答', '通用问答', '报告问答'],
-      apiBase: 'http://10.16.10.113',
-      apiVersion: '/v1',
-      appId: 'ba169b32-bf21-4510-9fad-36de07bd23c4',
-      apiKey: 'app-qEVHVfiSSS9twTz7dv9bj6LI',
-    },
-    {
-      title: '政府报文知识库',
-      icon: '/images/agent/deepseek.png',
-      type: 'KNOWLEDGE',
-      desc: '本工作流主要是用到了知识检索组件+知识库实现私有化知识库检索功能',
-      tags: ['数据问答', '通用问答', '报告问答'],
-      apiBase: 'http://10.16.10.113',
-      apiVersion: '/v1',
-      appId: 'ba169b32-bf21-4510-9fad-36de07bd23c4',
-      apiKey: 'app-QXhFzqP7gJHCckT2zxRQJA1N',
-    },
-  ];
+// interface CardData {
+//   [key: string]: Card[];
+// }
+type CardData = Card[];
+
+// const cardData: CardData[] = [
+//     {
+//       title: '人员信息知识库',
+//       icon: '/images/agent/deepseek.png',
+//       type: 'KNOWLEDGE',
+//       desc: '本工作流主要是用到了知识检索组件+知识库实现私有化知识库检索功能',
+//       tags: ['数据问答', '通用问答', '报告问答'],
+//       apiBase: 'http://10.16.10.113',
+//       apiVersion: '/v1',
+//       appId: '974262e7-3565-4af0-ae5f-79b0c92a86b9',
+//       apiKey: 'app-Vuoc1ifQpjYMiGMyjShUiWhv',
+//     },
+//     {
+//       title: '规则制度知识库',
+//       icon: '/images/agent/deepseek.png',
+//       type: 'KNOWLEDGE',
+//       desc: '本工作流主要是用到了知识检索组件+知识库实现私有化知识库检索功能',
+//       tags: ['数据问答', '通用问答', '报告问答'],
+//       apiBase: 'http://10.16.10.113',
+//       apiVersion: '/v1',
+//       appId: 'ba169b32-bf21-4510-9fad-36de07bd23c4',
+//       apiKey: 'app-qEVHVfiSSS9twTz7dv9bj6LI',
+//     },
+//     {
+//       title: '政府报文知识库',
+//       icon: '/images/agent/deepseek.png',
+//       type: 'KNOWLEDGE',
+//       desc: '本工作流主要是用到了知识检索组件+知识库实现私有化知识库检索功能',
+//       tags: ['数据问答', '通用问答', '报告问答'],
+//       apiBase: 'http://10.16.10.113',
+//       apiVersion: '/v1',
+//       appId: 'ba169b32-bf21-4510-9fad-36de07bd23c4',
+//       apiKey: 'app-QXhFzqP7gJHCckT2zxRQJA1N',
+//     },
+//   ];
 
 const RUNTIME_VARS_KEY = "DIFY_CHAT__RUNTIME_VARS";
 const RECENT_TITLES_KEY = "RECENT_CONVERSATION_TITLES";
@@ -82,12 +90,34 @@ const DifAgent: React.FC = () => {
     return [];
   });
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
-  const [agentList, setAgentList] = useState<CardData[]>([]);
+  const [agentList, setAgentList] = useState<Card[]>([]);
+  const router = useRouter() // 获取路由实例
+  // const installedApps = useContext(ExploreContext).installedApps
 
   useEffect(() => {
     (async () => {
       try {
-        // const [res] = await Promise.all([fetchKnowledgeList()]);
+        const response: AppListResponse = await fetchAppList({
+                url: "apps",
+                params: {
+                  page: 1,
+                  limit: 100,
+                  is_created_by_me: false,
+                  tag_ids: '3f4807f6-eba2-4390-a373-3ecea27ec5a4',
+                },
+        });
+        const cardData: CardData = response.data.map((item) => ({
+          title: item.name,
+          icon: item.icon,
+          type: '知识库',
+          desc: item.description,
+          tags: item.tags.map(tag => tag.name),
+          apiBase: '',
+          apiVersion: '',
+          appId: item.id,
+          apiKey: '',
+          use_icon_as_answer_icon:'',
+        }));
         setAgentList(cardData);
       } catch (error) {
         console.log('error', error)
@@ -99,13 +129,15 @@ const DifAgent: React.FC = () => {
   }, [recentConversationTitles]);
 
   const handleCardClick = async (card: Card): Promise<void> => {
+    // setInstalledApp(installedApps.find(item => item.app.id === card.appId))
     setSelectedCard(card);
-    setCurrentAppId(card.appId)
+    // setCurrentAppId(card.appId)
     setCurrentAppTitle(card.title);
     setDefaultMessage(null)
     setRuntimeVars(card.apiBase, card.apiVersion, card.apiKey);
     setActiveTitle(card.title);
     setActiveTab(null);
+    router.push(`/chat-agent/${card.appId}`) // AI对话
   };
 
   const handleBack = async (): Promise<void> => {
@@ -113,25 +145,25 @@ const DifAgent: React.FC = () => {
     setActiveTab('find');
   };
 
-  const handleTabClick = (tab: string): void => {
-    setActiveTab(tab);
-    setSelectedCard(null); // 重置 selectedCard 状态
-    setActiveTitle(null);
-  };
+  // const handleTabClick = (tab: string): void => {
+  //   setActiveTab(tab);
+  //   setSelectedCard(null); // 重置 selectedCard 状态
+  //   setActiveTitle(null);
+  // };
 
-  const handleRecentTitleClick = (title: string): void => {
-    const card = Object.values(cardData).flat().find(card => card.title === title);
-    if (card) {
-      setSelectedCard(card);
-      setRuntimeVars(card.apiBase, card.apiVersion, card.apiKey);
-      setActiveTitle(title);
-      setActiveTab(null);
-    }
-  };
+  // const handleRecentTitleClick = (title: string): void => {
+  //   const card = Object.values(cardData).flat().find(card => card.title === title);
+  //   if (card) {
+  //     setSelectedCard(card);
+  //     setRuntimeVars(card.apiBase, card.apiVersion, card.apiKey);
+  //     setActiveTitle(title);
+  //     setActiveTab(null);
+  //   }
+  // };
 
-  const handleCreateClick = (): void => {
-    window.open('http://10.16.10.113', '_blank');
-  };
+  // const handleCreateClick = (): void => {
+  //   window.open('http://10.16.10.113', '_blank');
+  // };
 
   const icons = ['⏳ ', '👀 ', '🐌 ', '☀️ ', '🍃 ']
   const questions: any[] = [
@@ -149,6 +181,11 @@ const DifAgent: React.FC = () => {
     setCurrentAppTitle(item.title)
     setDefaultMessage(item.desc)
   }
+
+  const aaaa = async () => {
+    return {appId:currentAppId}
+  }
+
 
   return (
     <div className="agent-platform">
@@ -188,7 +225,8 @@ const DifAgent: React.FC = () => {
               <div className="title-bar-text">{currentAppTitle}</div>
             </div>
             <div className="chat">
-              {/* <DifyChat appId={currentAppId} defaultMessage={defaultMessage} key={currentAppId + defaultMessage} /> */}
+             <ChatAgent params={aaaa()} />
+             {/* { currentAppId && <Main id = { currentAppId } />} */}
             </div>
           </div>
         ) : (
@@ -239,7 +277,7 @@ const DifAgent: React.FC = () => {
                 {activeTab === 'find' && (
                   <>
                     {agentList.filter(card => selectedCategory === '全部' || card.tags
-                      .some(tag => tag.name === selectedCategory)).map((card) => (
+                      .some(tag => tag === selectedCategory)).map((card) => (
                       <div className="agent-card" onClick={() => handleCardClick(card)} key={card.title}>
                         <div className="card-header">
                           <img src='/images/agent/deepseek.png' alt="robot" />
@@ -253,7 +291,7 @@ const DifAgent: React.FC = () => {
                         <p className="card-desc">{card.desc}</p>
                         <div className="card-stats">
                           {card.tags.map((stat, index) => (
-                            <span key={index}>{stat.name}</span>
+                            <span key={index}>{stat}</span>
                           ))}
                         </div>
                       </div>
@@ -261,7 +299,7 @@ const DifAgent: React.FC = () => {
                   </>
                 )}
 
-                {activeTab === 'mine' && (
+                {/* {activeTab === 'mine' && (
                   <>
                     {cardData['我的智能体'].map((card) => (
                       <div className="agent-card" onClick={() => handleCardClick(card)} key={card.title}>
@@ -283,7 +321,7 @@ const DifAgent: React.FC = () => {
                       </div>
                     ))}
                   </>
-                )}
+                )} */}
               </div>
             </div>
           </>
