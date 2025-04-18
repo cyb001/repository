@@ -1,0 +1,92 @@
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ribbon {
+    .ant-badge-ribbon-text {
+      /* 保留 Ant Design 原生类名 */
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+  }
+
+  .cardContent {
+    height: 100%;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        /* 适当调整 emoji 的大小 */
+        border-radius: 50%;
+        /* 圆形 */
+        background-color: #f0f0f0;
+        /* 背景色 */
+        text-align: center;
+        line-height: 1;
+        /* 保证 emoji 居中 */
+        color: #333;
+        /* 设置 emoji 的颜色 */
+      }
+
+
+      .deleteBtn {
+        background: none;
+        border: none;
+        color: #ff4d4f;
+        font-size: 18px;
+        cursor: pointer;
+        opacity: 0.7;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    .title {
+      font-size: 18px;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #666;
+      line-height: 1.5;
+      height: 48px;
+      overflow: hidden;
+    }
+
+    .footer {
+      margin-top: 16px;
+      color: #999;
+      font-size: 14px;
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-right: 16px;
+      }
+    }
+  }
+}

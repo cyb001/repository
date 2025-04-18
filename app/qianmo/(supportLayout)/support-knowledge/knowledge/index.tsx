@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
+import { Input, Button, Modal } from 'antd'; // 使用 Antd Input 和 Button
 import KnowledgeCard from './knowledge-card';
-import KnowledgeCreatingModal from './knowledge-creating-modal';
-import styles from './index.less';
+import KnowledgeCreatingModal from './knowledge-creating-modal'; // 引入你原来的 KnowledgeCreatingModal
+import './index.scss';
 
 // 模拟用户信息
-const mockUser = { nickname: '张三', avatar: 'https://via.placeholder.com/40' };
+const mockUser = { nickname: 'hhny', avatar: '👤' };
 
 // 模拟知识库数据
 const initialKnowledgeList = [
@@ -24,7 +25,7 @@ const initialKnowledgeList = [
     description: '系统接口调用说明',
     doc_num: 3,
     update_time: '2024-05-20',
-    avatar: 'https://via.placeholder.com/40',
+    avatar: '👤',
     nickname: '李四',
     permission: 'team'
   }
@@ -35,7 +36,7 @@ const KnowledgeList = () => {
   const [searchText, setSearchText] = useState('');
   const [creatingVisible, setCreatingVisible] = useState(false);
 
-  // 搜索过滤（记忆化优化）
+  // 搜索过滤
   const filteredList = useMemo(() => {
     return knowledgeList.filter(item => 
       item.name.includes(searchText) || 
@@ -67,32 +68,32 @@ const KnowledgeList = () => {
   };
 
   return (
-    <div className={styles.knowledge}>
+    <div className={'knowledge'}>
       {/* 头部操作区 */}
-      <div className={styles.topWrapper}>
-        <div className={styles.userGreeting}>
-          <span className={styles.title}>你好，{mockUser.nickname}</span>
-          <p className={styles.description}>管理你的知识库</p>
+      <div className={'topWrapper'}>
+        <div className={'userGreeting'}>
+          <span className={'title'}>欢迎回来，{mockUser.nickname}</span>
+          <p className={'description'}>管理你的知识库</p>
         </div>
-        <div className={styles.operationBar}>
-          <input
-            type="text"
+        <div className={'operationBar'}>
+          <Input
             placeholder="搜索知识库"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className={styles.searchInput}
+            className={'searchInput'}
           />
-          <button
+          <Button
+            type="primary"
             onClick={() => setCreatingVisible(true)}
-            className={styles.createButton}
+            className={'createButton'}
           >
             创建知识库 +
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* 卡片列表 */}
-      <div className={styles.cardGrid}>
+      <div className={'cardGrid'}>
         {filteredList.length ? (
           filteredList.map(item => (
             <KnowledgeCard
@@ -103,13 +104,12 @@ const KnowledgeList = () => {
             />
           ))
         ) : (
-          <div className={styles.emptyState}>
+          <div className={'emptyState'}>
             暂无知识库，点击 + 创建你的第一个知识库
           </div>
         )}
       </div>
-
-      {/* 创建模态框 */}
+      
       <KnowledgeCreatingModal
         visible={creatingVisible}
         onCancel={() => setCreatingVisible(false)}
