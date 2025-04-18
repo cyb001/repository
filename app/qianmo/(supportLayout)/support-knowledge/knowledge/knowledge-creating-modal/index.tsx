@@ -33,7 +33,6 @@ export default function KnowledgeCreatingModal({ visible, onOk, onCancel }: Moda
   return (
     <Modal
       title="创建知识库"
-      visible={visible}
       onOk={handleOk}
       onCancel={onCancel}
       okText="创建" 

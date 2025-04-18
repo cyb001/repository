@@ -1,50 +1,55 @@
-import { useState, useMemo } from 'react';
-import { Input, Button, Modal } from 'antd'; // 使用 Antd Input 和 Button
+import { useState, useMemo, useEffect } from 'react';
+import { Input, Button } from 'antd';
 import KnowledgeCard from './knowledge-card';
-import KnowledgeCreatingModal from './knowledge-creating-modal'; // 引入你原来的 KnowledgeCreatingModal
+import KnowledgeCreatingModal from './knowledge-creating-modal';
+import { getKbList } from '../service/index';
+import {
+  AppstoreAddOutlined,
+  UndoOutlined,
+  SearchOutlined,
+  FilterOutlined,
+} from "@ant-design/icons";
 import './index.scss';
 
 // 模拟用户信息
 const mockUser = { nickname: 'hhny', avatar: '👤' };
 
-// 模拟知识库数据
-const initialKnowledgeList = [
-  {
-    id: '1',
-    name: '产品手册',
-    description: '包含所有产品功能说明',
-    doc_num: 5,
-    update_time: '2024-06-01',
-    avatar: mockUser.avatar,
-    nickname: mockUser.nickname,
-    permission: 'private'
-  },
-  {
-    id: '2',
-    name: 'API文档',
-    description: '系统接口调用说明',
-    doc_num: 3,
-    update_time: '2024-05-20',
-    avatar: '👤',
-    nickname: '李四',
-    permission: 'team'
-  }
-];
-
 const KnowledgeList = () => {
-  const [knowledgeList, setKnowledgeList] = useState(initialKnowledgeList);
+  const [knowledgeList, setKnowledgeList] = useState<any[]>([]);
   const [searchText, setSearchText] = useState('');
   const [creatingVisible, setCreatingVisible] = useState(false);
 
+  // 初始化获取远端数据
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getKbList();
+        const formattedList = response.data.kbs.map((item: any) => ({
+          ...item,
+          // 时间戳转换
+          avatar: item.avatar || mockUser.avatar,
+          update_time: new Date(item.update_time).toISOString().split('T')[0],
+          description: item.description || '暂无描述',
+          permission: item.permission || 'private'
+        }));
+        setKnowledgeList(formattedList);
+      } catch (error) {
+        console.error('获取知识库列表失败', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   // 搜索过滤
   const filteredList = useMemo(() => {
-    return knowledgeList.filter(item => 
-      item.name.includes(searchText) || 
-      item.description.includes(searchText)
+    return knowledgeList.filter(item =>
+      item.name.includes(searchText) ||
+      (item.description || '').includes(searchText)
     );
   }, [searchText, knowledgeList]);
 
-  // 模拟创建逻辑
+  // 创建和删除逻辑
   const handleCreate = (name: string) => {
     setKnowledgeList([
       ...knowledgeList,
@@ -62,7 +67,6 @@ const KnowledgeList = () => {
     setCreatingVisible(false);
   };
 
-  // 模拟删除逻辑
   const handleDelete = (id: string) => {
     setKnowledgeList(knowledgeList.filter(item => item.id !== id));
   };
@@ -79,15 +83,17 @@ const KnowledgeList = () => {
           <Input
             placeholder="搜索知识库"
             value={searchText}
+            allowClear
             onChange={(e) => setSearchText(e.target.value)}
+            prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
             className={'searchInput'}
           />
           <Button
-            type="primary"
+            icon={<AppstoreAddOutlined />}
             onClick={() => setCreatingVisible(true)}
             className={'createButton'}
           >
-            创建知识库 +
+            创建知识库
           </Button>
         </div>
       </div>
@@ -104,12 +110,13 @@ const KnowledgeList = () => {
             />
           ))
         ) : (
-          <div className={'emptyState'}>
+          <div className={'emptyState'}
+            onClick={() => setCreatingVisible(true)}>
             暂无知识库，点击 + 创建你的第一个知识库
           </div>
         )}
       </div>
-      
+
       <KnowledgeCreatingModal
         visible={creatingVisible}
         onCancel={() => setCreatingVisible(false)}

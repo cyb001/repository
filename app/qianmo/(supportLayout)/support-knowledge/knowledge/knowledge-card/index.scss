@@ -35,7 +35,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 24px;
+        font-size: 20px;
         /* 适当调整 emoji 的大小 */
         border-radius: 50%;
         /* 圆形 */
@@ -88,5 +88,17 @@
         margin-right: 16px;
       }
     }
+  }
+}
+.more-btn {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  color: #999;
+  
+  &:hover {
+    background-color: #f5f5f5;
+    color: #333;
   }
 }
