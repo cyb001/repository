@@ -16,7 +16,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
     (config: any) => {
-        const token = 'ImYwMjUyNjYwMWJmNjExZjA5Zjk0ZjUxYzM4ZmQ4NWY5Ig.aAGu8Q.y26jW3k5XsMb9aTUCbR0qX90-aY';
+        const token = 'IjU2ODliZGNhMWMyMDExZjA5Zjk0ZjUxYzM4ZmQ4NWY5Ig.aAH0Zg.5QNFAC_ZzrpSzeyH4wQXEVxu8HY';
         if (token && config?.headers) {
             config.headers['Authorization'] = `${token}`;
             config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';

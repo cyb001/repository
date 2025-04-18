@@ -8,7 +8,7 @@ interface ModalProps {
 }
 
 export default function KnowledgeCreatingModal({ visible, onOk, onCancel }: ModalProps) {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<{ name: string }>(); // 指定泛型类型
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleOk = () => {
@@ -17,16 +17,14 @@ export default function KnowledgeCreatingModal({ visible, onOk, onCancel }: Moda
     });
   };
 
-  // 监听表单值变化，更新按钮的可点击状态
   const handleFormChange = () => {
     const name = form.getFieldValue('name');
-    setIsButtonDisabled(!name?.trim());
+    setIsButtonDisabled(!(name?.trim() || false)); // 增加空字符串判断
   };
 
-  // 监听 visible 变化，重置表单
   useEffect(() => {
     if (visible) {
-      form.resetFields(); // 重置表单
+      form.setFieldsValue({ name: '' }); 
     }
   }, [visible, form]);
 
@@ -43,12 +41,14 @@ export default function KnowledgeCreatingModal({ visible, onOk, onCancel }: Moda
       }}
       cancelButtonProps={{ className: 'cancel-btn' }}
     >
+      {/* 增加key保证表单实例唯一性 */}
       <Form
-        form={form}
+        key="knowledge-create-form" 
+        form={form}  // 确保form属性正确传递
         layout="vertical"
-        initialValues={{ name: '' }}  // 默认值为空
+        initialValues={{ name: '' }}
         className="knowledge-modal-form"
-        onValuesChange={handleFormChange}  // 监听表单值变化
+        onValuesChange={handleFormChange}
       >
         <Form.Item
           name="name"
